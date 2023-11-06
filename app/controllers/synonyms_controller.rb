@@ -21,6 +21,17 @@ class SynonymsController < ApplicationController
     end
   end
 
+  def create
+    word = Word.find(params[:word_id]) # Find the word to ensure it exists
+    synonym = word.synonyms.build(synonym_params) # Build a new synonym associated with the word
+
+    if synonym.save
+      render json: synonym, status: :created
+    else
+      render json: synonym.errors, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     synonym = Synonym.find(params[:id])
     synonym.destroy
@@ -31,6 +42,10 @@ class SynonymsController < ApplicationController
 
   def validate_admin_user
     render json: { error: 'Not Authorized' }, status: 401 unless current_user.admin?
+  end
+
+  def synonym_params
+    params.require(:synonym).permit(:text, :word_id)
   end
   
 end
