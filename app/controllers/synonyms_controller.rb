@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class SynonymsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
-  before_action :validate_admin_user, except: [:show]
+  before_action :authenticate_user!, except: [:show, :create]
+  before_action :validate_admin_user, except: [:show, :create]
 
   # Lists all unapproved synonyms for admin review
   def index
